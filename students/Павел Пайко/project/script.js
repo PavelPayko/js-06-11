@@ -1,19 +1,5 @@
 const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
-function sendRequest(url) {
-    return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === 4) {
-                console.log("send", xhr.responseText);
-                resolve(xhr.responseText)
-            }
-        }
-        xhr.open('GET', `${API}${url}`, true)
-        xhr.send()
-    })
-}
 class List {
     constructor() {
         this.goods = [];
@@ -71,7 +57,7 @@ class BasketList extends List {
         return summ;
     }
     remove(elem) {
-        let toRemove = this.goods.findIndex((pos) => {
+        let toRemove = this.cartGoods.findIndex((pos) => {
             return elem === pos.product_name
         })
         console.log(toRemove)
@@ -106,16 +92,49 @@ class BasketItem extends Item {
     }
 }
 
-const list = new GoodsList;
-const basket = new BasketList;
+// const list = new GoodsList;
+// const basket = new BasketList;
 
-sendRequest('/catalogData.json')
-    .then((data) => {
-        const listToParse = JSON.parse(data)
-        console.log("promise1", listToParse);
-        return list.fetchGoods(listToParse);
-    })
-    .then(() => {
-        console.log("promise2");
-        list.render()
-    })
+
+const app = new Vue({
+    el: '#app',
+    data: {
+        goods: [],
+        cartGoods: [],
+        filteredGoods: [],
+        searchValue: ''
+    },
+    methods: {
+        fetchGoods() {
+            fetch(`${API}/catalogData.json`)
+                .then((result) => {
+                    return result.json();
+                })
+                .then((data) => {
+                    this.goods = data;
+                    this.filteredGoods = data;
+                });
+        },
+        addToCart(item) {
+            this.cartGoods.push(item)
+
+        },
+        removeFromCart(item) {
+            let toRemove = this.cartGoods.findIndex((pos) => {
+                return item.product_name === pos.product_name
+            })
+            if (toRemove != -1)
+                console.log(toRemove)
+            this.cartGoods.splice(toRemove, 1)
+        },
+        filterGoods(value) {
+            console.log('filter')
+            const regexp = new RegExp(value, 'i');
+            this.filteredGoods = this.goods.filter(item => regexp.test(item.product_name))
+        }
+
+    },
+    mounted() {
+        this.fetchGoods()
+    }
+})
