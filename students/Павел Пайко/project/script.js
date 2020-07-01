@@ -102,7 +102,9 @@ const app = new Vue({
         goods: [],
         cartGoods: [],
         filteredGoods: [],
-        searchValue: ''
+        searchValue: '',
+        isCartVisible: false
+
     },
     methods: {
         fetchGoods() {
@@ -127,9 +129,9 @@ const app = new Vue({
                 console.log(toRemove)
             this.cartGoods.splice(toRemove, 1)
         },
-        filterGoods(value) {
+        filterGoods() {
             console.log('filter')
-            const regexp = new RegExp(value, 'i');
+            const regexp = new RegExp(this.searchValue, 'i');
             this.filteredGoods = this.goods.filter(item => regexp.test(item.product_name))
         }
 

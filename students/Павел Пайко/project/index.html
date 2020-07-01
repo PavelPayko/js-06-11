@@ -21,23 +21,23 @@
                     <button class="search-button" type="button" v-on:click='() => filterGoods(searchValue)'><span
                             class="icon-search">&#xe801</span></button>
                 </label>
-                <button type="button" class="cart-button">
+                <button type="button" class="cart-button" @click='isCartVisible = !isCartVisible'>
                     <span class="icon-basket">&#xe800</span>
-                    <div class="count" v-if='cartGoods.length>0' v-model='cartGoods'>{{ cartGoods.length }}</div>
+                    <div class="count" v-if='cartGoods.length>0'>{{ cartGoods.length }}</div>
                 </button>
             </div>
 
         </header>
         <main>
             <div class="goods-list">
-                <h2 v-if="goods.length == 0" style="text-align: center;">{{ 'Список товаров пуст' }}</h2>
+                <h2 v-if="goods.length == 0" style="text-align: center;">Список товаров пуст</h2>
                 <div class="goods-item" v-for='item in filteredGoods'>
                     <h2>{{ item.product_name }}</h2>
                     <p>{{ item.price }}</p>
                     <button v-on:click='() => addToCart(item)'>Купить</button>
                 </div>
             </div>
-            <div class="cart-list" v-if='(cartGoods.length>0)'>
+            <div class="cart-list" v-if='isCartVisible'>
                 <div class="cart-item" v-for='item in cartGoods'>
                     <h2>{{ item.product_name }}</h2>
                     <p>{{ item.price }}</p>
