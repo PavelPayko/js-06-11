@@ -1,17 +1,85 @@
-let sendGETRequest = (url, method = 'GET', payload = {}) => {
-    return new Promise((resolve) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = () => {
-            resolve(JSON.parse(xhr.responseText))
-        }
-        xhr.open('GET', url, true);
-        xhr.send(payload);
-    })
-}
 
 const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+const app = new Vue({
+    el: '#app',
+    data: {
+        goods: [],
+        filteredGoods: [],
+        searchLine: '',
+        basketItems: [],
+    },
+    methods: {
+        makeGETRequest(url, payload = {}) {
+            return new Promise((resolve) => {
+                const xhr = new XMLHttpRequest();
+                xhr.onload = () => {
+                    resolve(JSON.parse(xhr.responseText))
+                }
+                xhr.open('GET', url, true);
+                xhr.send(payload);
+            })
+        },
+        getBasketItems() {
+            this.makeGETRequest(`${API_URL}/getBasket.json`).then(basketItems => {
+                this.basketItems = basketItems.contents;
+                console.log(this.basketItems)
+            })
+        },
+        addToTheBasket(name) {
+            this.makeGETRequest(`${API_URL}/addToBasket.json`, {name})
+                .then(res => {
+                    if (res.result === 1) {
 
-// корзина
+                        const product = this.goods.find(it => it && it.product_name === name);
+                        this.basketItems.push(product)
+                    } else {
+                        console.log('error push')
+                    }
+                })
+        },
+        removeFromTheBasket(name) {
+            this.makeGETRequest(`${API_URL}/deleteFromBasket.json`, {name})
+                .then((res) => {
+                    const {result} = res;
+                    if (result === 1) {
+                        let removedProduct = this.goods.find(it => it && it.product_name === name);
+                        let index = this.basketItems.findIndex(removedProduct => removedProduct === removedProduct)
+                        if (removedProduct !== -1) {
+                            this.basketItems.splice(index, 1);
+                        }
+                    } else {
+                        console.log('error delete')
+                    }
+                })
+        },
+        clearBasket() {
+            this.basketItems = [];
+        },
+        filterList(){
+            this.filteredGoods = this.goods.filter(good => {
+                return good.product_name.includes(this.searchLine)
+            })
+        },
+
+    },
+    computed: {
+        isBasketVisible() {
+            return this.basketItems.length > 0;
+        },
+        ifBasketEmpty(){
+            return this.basketItems.length === 0;
+        },
+
+    },
+    mounted() {
+        this.makeGETRequest(`${API_URL}/catalogData.json`, {}).then(goods => {
+            this.goods = goods;
+            this.filteredGoods = goods;
+        });
+    }
+});
+
+/*// корзина
 class Basket {
     constructor() {
         this.basketItems = [];
@@ -19,10 +87,9 @@ class Basket {
     }
 
     getBasketItems() {
-        sendGETRequest(`${API_URL}/getBasket.json`).then(basketItems=> {
+        sendGETRequest(`${API_URL}/getBasket.json`).then(basketItems => {
             this.basketItems = basketItems.contents;
-            console.log(this.basketItems)
-            this.render();
+            // this.render();
         })
     }
 
@@ -32,7 +99,6 @@ class Basket {
                 const {result} = res;
                 if (result === 1) {
                     const product = list.findProductByName(name);
-                    console.log(product)
                     this.basketItems.push(product)
                 } else {
                     console.log('error push')
@@ -42,7 +108,6 @@ class Basket {
     };
 
     removeFromTheBasket(name) {
-        console.log(name)
         sendGETRequest(`${API_URL}/deleteFromBasket.json`, 'DELETE', {name})
             .then((res) => {
                 const {result} = res;
@@ -71,16 +136,15 @@ class Basket {
     }
 
 
-    render() {
-        let list = '';
-        console.log(this.basketItems)
-        this.basketItems.forEach(({product_name, price}) => {
-                const item = new BasketItem(product_name, price)
-                list += item.render()
-            }
-        )
-        document.querySelector('.basket-block').innerHTML = list;
-    }
+    // render() {
+    //     let list = '';
+    //     this.basketItems.forEach(({product_name, price}) => {
+    //             const item = new BasketItem(product_name, price)
+    //             list += item.render()
+    //         }
+    //     )
+    //     document.querySelector('.basket-block').innerHTML = list;
+    // }
 }
 
 const basketList = new Basket;
@@ -93,14 +157,14 @@ class BasketItem {
         this.price = price;
     }
 
-    render() {
-        return `
-                <div class="basket-item-name" data-title="${this.product_name}" data-price="${this.price}">
-                <h2 class="">${this.product_name}</h2>
-                <p class="">${this.price}</p>
-                <button class="btn-delete" onclick="basketList.removeFromTheBasket('${this.product_name}')">delete</button>
-                </div>`;
-    }
+    // render() {
+    //     return `
+    //             <div class="basket-item-name" data-title="${this.product_name}" data-price="${this.price}">
+    //             <h2 class="">${this.product_name}</h2>
+    //             <p class="">${this.price}</p>
+    //             <button class="btn-delete" onclick="basketList.removeFromTheBasket('${this.product_name}')">delete</button>
+    //             </div>`;
+    // }
 }
 
 // ответ с сервера, запрошенный товар, его отображение на странице
@@ -120,11 +184,10 @@ class Produckt {
     }
 
     render() {
-        return `<div class="goods-item" data-title="${this.product_name}" data-price="${this.price}">
-                <h2 class="title">${this.product_name}</h2>     
-                <p class="price">${this.price} euro</p>
-                <button class="btn" onclick="basketList.addToTheBasket('${this.product_name}', '${this.price}')">добавить в корзину</button>
-                </div>`;
+        // return `<div class="goods-item" data-title="${this.product_name}" data-price="${this.price}">
+        //         <h2 class="title">${this.product_name}</h2>
+        //         <p class="price">${this.price} euro</p>
+        //         </div>`;
     }
 }
 
@@ -152,7 +215,6 @@ class GoodsList {
 
     render() {
         let listHtml = '';
-        console.log(this.goods)
         this.goods.forEach(({product_name, price}) => {
                 const item = new Produckt(product_name, price)
                 listHtml += item.render()
@@ -161,7 +223,7 @@ class GoodsList {
         document.querySelector('.goods-list').innerHTML = listHtml;
     }
 
-    findProductByName (name) {
+    findProductByName(name) {
         return this.goods.find(good => good.product_name === name)
     }
 }
@@ -217,4 +279,4 @@ class Hamburger {
         this.toppings.forEach(toppingItem => toppingCcal += toppingItem.calories)
         return this.type.calories + contentCcal + toppingCcal;
     }
-}
+}*/

@@ -1,0 +1,42 @@
+*{margin: 0;padding:0}
+.box{
+    display: block;
+    width: 500px;
+    margin: 90px auto 0;
+}
+
+p{
+    margin-bottom: 8px;
+}
+legend{
+  text-align: center;
+    font-size: 17px;
+    display: block;
+    padding: 0 12px;
+    font-weight: bold;
+
+}
+
+.radio-variant{
+    display: inline-block;
+    width: 47%;
+}
+
+.row{
+    border-bottom: 1px solid gray;
+    padding: 10px;
+}
+.submit {
+  text-align: center;
+    padding: 20px;
+}
+input[type=submit]{
+    padding: 4px 15px 6px;
+}
+
+#message{
+    height:28px
+}
+label{
+    cursor:pointer;
+}

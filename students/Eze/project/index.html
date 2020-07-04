@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eShop</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer ></script>
+  <script src = "script.js" defer></script>
+  <link href = "style.css" type = "text/css"
+        rel = "stylesheet">
+
+</head>
+<body>
+<div id="app">
+    <header class = "header">
+         <nav class = "menu">
+             <ul>
+                 <li><a href = "index.html">КАТАЛОГ</a></li>
+             </ul>
+         </nav>
+         <div class ="search" >
+             <input type="text" v-model ="searchLine"  id ="goods-search" placeholder="поиск по названию"/>
+             <button class="search-button" type="submit"  @click.prevent="search()">найти</button>
+         </div>
+         <div id = "floating-cart-container">
+             <div id =  "cart-icon-container" >
+                 <img id = "cart-icon" src = "image/cart-icon.png"
+                      alt = "cartimg">
+
+             </div>
+         </div>
+
+    </header>
+
+
+    <main>
+
+<!--    корзина-->
+<!-- <table width="100%" id="cart-table" cellpadding="10" cellspacing="1" border="0">-->
+<!--    <tbody>-->
+<!--        <tr>-->
+<!--            <th>Наименование</th>-->
+<!--            <th>Количество</th>-->
+<!--            <th class="text-right">Price</th>-->
+<!--            <th class="text-right">Action</th>-->
+<!--        </tr>-->
+
+<!--        <tr>-->
+<!--            <td><{{ good.product_name }}></td>-->
+<!--            <td><input type="number" name="quantity"-->
+<!--                class="quantity"-->
+<!--                value="${quantity}" data-code='<{{ good.price }}>' size=2 onChange="updatePrice(this)" /> <input-->
+<!--                type="hidden" class='total' name="total"-->
+<!--                value="{{ good.price }}" /></td>-->
+<!--            <td align=right class="prc" id="price" ><{{ good.price }}}></td>-->
+
+<!--        <td class="text-right"><a-->
+<!--                onClick="cartAction('remove',{{good.id_product}}')"-->
+<!--                class="btnRemoveAction"><img-->
+<!--                    src="images/icon-delete.png"-->
+<!--                    alt="Remove Item" /></a></td>-->
+<!--        </tr>-->
+
+<!--          <tr id="tot">-->
+<!--            <td colspan="3" align=right><strong>Total (руб): </strong> <span id="total"><></span></td>-->
+<!--            <td align="right"><a id="btnEmpty" onClick="cartAction('empty', '');">Очистить корзину</a></td>-->
+<!--        </tr>-->
+<!--    </tbody>-->
+<!--</table>-->
+<!--<div id="checkout">Оплатить</div>-->
+
+<!--<div id="empty-cart">Ваша корзина пуста</div>-->
+
+      <div class = "goods-item" v-for="good of filteredGoods" :key="good.id_product">
+
+        <h3> {{ good.product_name }} </h3>
+        <p> {{ good.price }} </p>
+        <button class="add-to-cart" @click="addProduct (item)">Добавить в корзину</button>
+
+      </div>
+    </main>
+
+</div>
+
+</body>
+</html>

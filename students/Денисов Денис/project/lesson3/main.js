@@ -89,27 +89,34 @@ class BasketList {
         promise.then(
             result => {
                 this.basketGoods = JSON.parse(result);
+                this.priceSum()
+                this.quantityGoods()
             }
         )
+        return this.basketGoods
     }
 
+    get item() {
+        return this.basketGoods.contents
+    }
 
     addItem(item) {
         let arr = list.item
-        console.log(arr)
         let brr = arr.some(x => {
             if (x.product_name == item) {
-                console.log(x)
                 this.basketGoods.contents.push(x)
+                this.basketGoods.amount + this.basketGoods.contents.price
                 let promise = makeGETRequest(`${API_URL}/addToBasket.json`, this.basketGoods);
                 promise.then(
                     result => {
                         alert(item + ' добавлен в корзину')
+                            // this.priceSum()
+                        this.quantityGoods()
+                        return this.basketGoods
                     }
                 )
             }
         })
-
     }
 
     removeItem(elem) {
@@ -118,7 +125,9 @@ class BasketList {
         let idx = arr.indexOf(elem);
         this.basketGoods.contents.splice(idx, 1);
         document.querySelector('.basket-list').removeChild(elem);
-        return this._product
+        // this.priceSum()
+        this.quantityGoods()
+        return this.basketGoods
     }
 
     render() {
@@ -137,11 +146,16 @@ class BasketList {
         })
     }
     priceSum() {
-        let sum = 0;
-        this.goods.forEach(good => {
-            sum += good.price
+        this.sum = 0
+        this.basketGoods.contents.forEach(good => {
+            this.sum += good.price
         })
-        return sum
+        document.querySelector('.cart-quantity').textContent = `В корзине товара на ${this.sum} руб.`
+        return this.sum
+    }
+
+    quantityGoods() {
+        return document.querySelector('.cart-quantity').textContent = `В корзине ${this.item.length} товара на ${this.priceSum()} руб.`
     }
 }
 

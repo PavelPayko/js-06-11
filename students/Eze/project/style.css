@@ -1,0 +1,176 @@
+body {
+    font-family: arial;
+    position: relative;
+    font-size: 16px;
+}
+
+
+.header .menu ul {
+    display: flex;
+}
+
+
+
+.header {
+
+    display: flex;
+    flex-wrap: wrap; /*перенос строки */
+    justify-content: space-between; /*прижимает содержимое к краям */
+    align-items: center; /*выравнивает элементы по центру на вертикальной */
+
+    border-bottom: 1px #E2E2E2 solid;
+
+    background: #ffffff;
+}
+
+
+
+.header .menu ul {
+    display: flex;
+    list-style: none;
+}
+
+.header .menu ul li {
+    margin: 20px 10px;
+
+}
+
+.header .menu ul a {
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 200px;
+
+}
+.header .menu ul a:hover {
+  text-decoration: underline;
+}
+
+
+
+
+@media screen and (max-width: 500px) {
+    .header  {
+        flex-direction: column;
+    }
+    .header .menu ul {
+        flex-direction: column;
+        align-self: center;
+    }
+    .header .menu ul li {
+        margin: 5px;
+    }
+}
+
+.header {
+    height: 130px;
+    border-bottom: 1px #E2E2E2 solid;
+    justify-content: space-between;
+    background: #ffffff;
+}
+
+
+
+#cart-icon-container {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #4a642e;
+    right:50px;
+
+}
+
+#floating-cart-container {
+
+    top: 20px;
+   right: 40px;
+    cursor: pointer;
+    width: 80px;
+    height: 80px;
+}
+
+#cart-icon {
+    margin-top: 20px;
+    margin-left: 22px;
+}
+
+
+
+
+
+
+
+ #txt-heading {
+    margin-top: 0px;
+    background-color: rgba(224, 224, 224, 1);
+    height: 37px;
+    font-weight: lighter;
+
+
+}
+
+
+
+
+
+
+img.cart-item-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: #E0E0E0 1px solid;
+    padding: 5px;
+    vertical-align: middle;
+    margin-right: 15px;
+}
+
+#product-grid {
+    margin: 40px;
+    width: 85%;
+    text-align: center;
+}
+
+
+#product-grid .txt-heading {
+    margin-bottom: 7px;
+    margin-right: 105px;
+}
+
+
+
+
+
+.cart-action {
+    cursor: pointer;
+}
+
+
+
+
+
+
+.goods-item {
+  width: 200px;
+  height: 200px;
+  float: left;
+  background: #ffffff;
+  margin: 30px 30px 0px 0px;
+  border: #E0E0E0 1px solid;
+  text-align: center;
+
+
+}
+
+.btnAddAction {
+    padding: 5px 10px;
+    margin: 30px;
+    background-color: #efefef;
+    border: #E0E0E0 1px solid;
+    color: #211a1a;
+    text-decoration: none;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    bottom: 5px;
+}

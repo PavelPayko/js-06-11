@@ -1,0 +1,69 @@
+
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Конструктор Гамбургера</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div class="box">
+        <fieldset>
+            <legend>Конструктор гамбургера</legend>
+            <div class="row" id = "radio-size">
+                <p>Выберете размер гамбургера</p>
+                <div class="radio-variant">
+                    <input type="radio" name="size" id="small" value="small" checked />
+                    <label for="small">маленький</label>
+                </div>
+                <div class="radio-variant">
+                    <input type="radio" name="size" id="big" value="big" />
+                    <label for="large">большой</label>
+                </div>
+            </div>
+            <div class="row" id = "radio-stuff">
+                <p>Добавьте начинку</p>
+                <div class="radio-variant">
+                    <input type="radio" name="stuff" id="cheese" value="cheese" checked />
+                    <label for="cheese">Сыр</label>
+                </div>
+                <div class="radio-variant">
+                    <input type="radio" name="stuff" id="salad" value="salad" />
+                    <label for="salad">Салат</label>
+                </div>
+                <div class="radio-variant">
+                    <input type="radio"name="stuff" id="fries" value="fries" />
+                    <label for="fries">Картофель</label>
+                </div>
+            </div>
+            <div class="row additions" id = "checkbox-toppings">
+                <p>Добавьте приправу или соус</p>
+                <div class="checkbox-toppings">
+                    <input type="checkbox" name="top" id="spice" value="spice" />
+                    <label for="spice">Перец</label>
+                </div>
+                <div class="checkbox-toppings">
+                    <input type="checkbox" name="top" id="mayo" value="mayo" />
+                    <label for="mayo">Майонез</label>
+                </div>
+            </div>
+            <div class="submit" id = "submit">
+                <input type="submit" value="Итого" />
+            </div>
+        </fieldset>
+        <br />
+        <div id="result">
+        
+            <div><b>Итого стоимость:</b> <span id="price">0</span> рублей</div>
+            <div><b>Всего :</b> <span id="energie">0</span> калорий</div>
+        </div>
+    </div>
+    <script defer src="script.js"></script>
+
+</body>
+
+</html>

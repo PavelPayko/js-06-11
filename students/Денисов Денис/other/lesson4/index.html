@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .form__column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 398px;
+            justify-content: space-evenly;
+        }
+        
+        .form__label {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <form action="" class="form" id="myForm">
+            <div class="form__column">
+                <label for="" class="form__label">
+                    <span class="name">Имя</span>
+                    <input type="text" name='name' class="form__input">
+                </label>
+                <label for="" class="form__label">
+                    <span class="phone">Телефон</span>
+                    <input type="text" name='phone' class="form__input">
+                </label>
+                <label for="" class="form__label">
+                    <span class="mail">e-mail</span>
+                    <input type="text" name='mail' class="form__input">
+                </label>
+                <label for="" class="form__label">
+                    <span class="text">Текст</span>
+                    <textarea name="" id="" cols="30" rows="10" class="form__textarea"></textarea>
+                </label>
+                <button class="form__button">Отправить</button>
+            </div>
+        </form>
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>

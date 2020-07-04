@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Валидация формы</title>
+</head>
+
+<body>
+    <h1>Форма обратной связи</h1>
+    <form id="feedback" name="feedback" method="POST">
+        <ul class="form-list form-list_contact">
+            <li>
+                <label>Ваше имя:</label>
+                <div>
+                    <input class="form-control" type="text" name="username" maxlength="30" value="">
+                </div>
+                <span class="error"></span>
+            </li>
+            <li>
+                <label>Электронная почта:</label>
+                <div>
+                    <input class="form-control" type="text" name="usermail" maxlength="50" value="">
+                </div>
+                <span class="error"></span>
+            </li>
+            <li>
+                <label>Телефон:</label>
+                <div>
+                    <input class="form-control" type="text" name="userphone" maxlength="50" value="+7(000)000-0000">
+                </div>
+                <span class="error"></span>
+            </li>
+
+            <li>
+                <label>Тема сообщения:</label>
+                <div>
+                    <input class="form-control" type="text" name="subject" maxlength="50" value="">
+                </div>
+                <span class="error"></span>
+            </li>
+            <li>
+                <label>Текст сообщения:</label>
+                <div>
+                    <textarea class="form-control" name="textmess"></textarea>
+                </div>
+                <span class="error"></span>
+            </li>
+            <li>
+                <label></label>
+                <div>
+                    <button id="send_mess" type="submit">отправить сообщение</button>
+                </div>
+            </li>
+        </ul>
+    </form>
+
+
+    <script src="script.js"></script>
+</body>

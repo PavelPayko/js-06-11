@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>eShop</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <input type="text" v-model="searchLine" class="goods-search" />
+            <button class="search-button" @click="clickSearch(searchLine)" type="button">Искать</button>
+            <button class="cart-button" @click="opencart" type="button">Корзина</button>
+        </header>
+        <main>
+            <div class="goods-list">
+                <div class="goods-stub" v-if="loaded === false">
+                    <h3>Товар отсутствует</h3>
+                </div>
+                <div class="goods-item" v-for="good in filteredGoods" :data-title=' good.product_name' :data-price="good.price" :data-id="good.id_product">
+                    <h3>{{ good.product_name }}</h3>
+                    <p>{{ good.price }}</p>
+                    <button class="goods-button" name="add-to-card" @click="addItem(good)">Добавить в корзину</button>
+                </div>
+            </div>
+            <div class="basket-list" v-if="basketGoods.length != 0">
+                <div class="basket-amount">Общая стоимость товаров {{totalAmount}} руб.</div>
+                <div class="basket-item" v-for="basketItem in basketGoods">
+                    <h3>{{ basketItem.product_name }}</h3>
+                    <p>{{basketItem.quantity}} шт.</p>
+                    <p>{{ basketItem.price }}</p>
+                    <button class="basket-button" @click='removeItem(basketItem.id_product)'>Удалить из корзины</button>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

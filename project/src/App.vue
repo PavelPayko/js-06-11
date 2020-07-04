@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <Header>
-      <input type="text" class="goods-search" v-model="searchText" />
-      <button type="button" class="search-button">Искать</button>
+      <Search
+        :text="searchText"
+        @textChange="(value) => (searchText = value)"
+      />
       <button
         type="button"
         class="cart-button"
@@ -10,18 +12,11 @@
       >
         Корзина
       </button>
-      <div class="cart" v-if="isCartVisible">
-        <div
-          class="cart-item"
-          v-for="item in cartGoods"
-          v-bind:key="item.id_product"
-        >
-          <h3>{{ item.product_name }}</h3>
-          <p>{{ item.price }}</p>
-        </div>
-      </div>
+      <Cart v-if="isCartVisible" :cartGoods="cartGoods" />
     </Header>
+    <Error v-if="isError" />
     <GoodsList
+      v-else
       @addToCart="addToCart"
       :filteredGoods="filteredGoods"
       emptyGoodsMessage="Товаров нет"
@@ -32,15 +27,20 @@
 <script>
 import GoodsList from "./components/GoodsList.vue";
 import Header from "./components/Header.vue";
+import Search from "./components/Search.vue";
+import Cart from "./components/Cart.vue";
+import Error from "./components/Error.vue";
 
-const API =
-  "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
+const API = "http://localhost:3000";
 
 export default {
   name: "App",
   components: {
     GoodsList,
     Header,
+    Cart,
+    Search,
+    Error,
   },
   data() {
     return {
@@ -48,23 +48,60 @@ export default {
       cartGoods: [],
       searchText: "",
       isCartVisible: false,
+      isError: false,
     };
   },
   mounted() {
     this.fetchGoods();
+    this.fetchCart();
   },
   methods: {
     fetchGoods() {
-      fetch(`${API}/catalogData.json`)
+      fetch(`${API}/catalog`)
         .then((result) => {
           return result.json();
         })
         .then((data) => {
           this.goods = data;
+        })
+        .catch((err) => {
+          this.isError = true;
+          console.error(err);
+        });
+    },
+    fetchCart() {
+      fetch(`${API}/cart`)
+        .then((result) => {
+          return result.json();
+        })
+        .then((data) => {
+          this.cartGoods = data;
+        })
+        .catch((err) => {
+          console.error(err);
         });
     },
     addToCart(item) {
-      this.cartGoods.push(item);
+      fetch(`${API}/addToCart`, {
+        method: "POST",
+        body: JSON.stringify({ item }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((result) => {
+          return result.json();
+        })
+        .then((data) => {
+          if (data.result) {
+            this.cartGoods.push(item);
+          } else {
+            console.error("Cant add item to cart");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
     removeFromCart(id) {
       const index = this.cartGoods.find(({ id_product }) => id_product === id);
@@ -121,19 +158,6 @@ body {
 
 .cart-button:hover {
   background: #3b7eb9;
-}
-
-.cart {
-  position: absolute;
-  width: 300px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  background: #fff;
-  padding: 10px 15px;
-  top: 100px;
-}
-
-.cart-item {
-  margin-bottom: 10px;
 }
 
 .goods-list {
